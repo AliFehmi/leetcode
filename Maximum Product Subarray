@@ -1,0 +1,133 @@
+class Solution { // idea is to seperate nums into smaller vectors, according to the positions of zeros and calculate each vectors max
+    // what about consecutive zero's??,,, gives error when there is only one element in the list
+public:
+    void findMax(vector<int> &numbers, int & max){ // find the max value of a sublist that has no 0 in it
+        int currentValue=1, negativeCount;
+        if (numbers.size()!=0){
+        if (numbers.size() ==1){ // between two zeros if there is 1 number
+            if ( numbers[0]>0){
+            currentValue=numbers[0];
+            }
+            else{
+                currentValue=0;
+            }
+        }
+        else{
+            for (int i=0; i < numbers.size(); i++){ // counts the negative numbers
+                if ( numbers[i]<0){
+                    negativeCount++;
+                }
+            }
+            if (negativeCount%2==0){ // even numbers of negatives
+                for (int i=0; i < numbers.size(); i++){
+                    currentValue*= numbers[i];
+                }
+            }
+            else{ // odd numbers of negatives
+                int lastNegativeIndex, firstNegativeIndex, prodL=1, prodR=1;
+                for (int i=0; i < numbers.size(); i++){
+                    if (numbers[i] <0){
+                        firstNegativeIndex=i;
+                        break;
+                    }
+                }
+                for (int i=0; i < numbers.size(); i++){
+                    if (numbers[i] <0){
+                        lastNegativeIndex=i;
+                       
+                    }
+                }
+                if (lastNegativeIndex== numbers.size()-1){ // if last index is a negative number
+                    int firstNegative, leftP=1, rightP=1;
+                    for (int i=0; i <numbers.size(); i++){
+                        if (numbers[i]<0){
+                            firstNegative= i;
+                            break;
+                        }
+                    }
+                    
+                    for (int i=0; i <lastNegativeIndex; i++){ // left side 
+                        leftP*=numbers[i];
+                    }
+                    for (int i=firstNegative+1; i <numbers.size(); i++ ){
+                        rightP*= numbers[i];
+                    }
+                    if (leftP > rightP){
+                        currentValue= leftP;
+                    }
+                    else{
+                        currentValue= rightP;
+                    }
+                }
+                else{
+                    
+                    for (int i= firstNegativeIndex+1; i < numbers.size(); i++){ //right side of first negative
+                        prodR*= numbers[i];
+                        
+                    }
+                    for (int i= lastNegativeIndex-1; i >=0; i--){ // leftside of the last negative
+                        prodL*= numbers[i];
+                    }
+                    if (prodR >= prodL){
+                        currentValue= prodR;
+                    }
+                    else{
+                        currentValue= prodL;
+                    }
+                    
+                }
+            }
+            
+        }
+            if (currentValue > max){
+                max= currentValue;
+            }
+     
+    }
+    }
+    int maxProduct(vector<int>& nums) {
+       int zeroCount=0, maxValue=-9999999;
+        if (nums.size()==1){
+            return nums[0];
+        }
+        else{
+       for (unsigned int i=0; i < nums.size(); i++){ // find how many 0 is there in the list
+           if ( nums[i]== 0){
+               zeroCount++;
+           }
+       }
+        if ( zeroCount==0){ // no zero is found in the nums
+            findMax(nums, maxValue);
+        }
+        else{ // 1 or more zeros appeared in the nums
+            int previousZeroIndex=-1, lastZeroIndex;
+            for (int i =0; i <nums.size(); i++){ 
+                if (nums[i]== 0){
+                    lastZeroIndex=i;
+                }
+            }
+            for (int i=0; i <nums.size(); i++){
+                if (nums[i]== 0){
+                    vector<int> sublist;
+                    
+                    for (int j=previousZeroIndex+1; j <i; j++){
+                         sublist.push_back(nums[j]);                           
+                    }
+                    findMax(sublist, maxValue); // calculate the sublist maxValue
+                    previousZeroIndex=i; // update the zero index
+
+                }
+                if (i== lastZeroIndex && i!= nums.size()-1){ // if ith 0 is the last zero
+                    vector<int> sublist;
+                    for (int j= i+1; j < nums.size(); j++){
+                        sublist.push_back(nums[j]);
+                    }
+                    findMax(sublist, maxValue);
+                }
+            }
+            
+        }
+        return maxValue;
+    }
+    }
+};
