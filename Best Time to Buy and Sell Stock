@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) { // prices should be in nondecreasing orders so that we can buy
+        int buyingPrice, sellingPrice=-10, max=0, currentProfit, previousBuyingPrice=9999999;
+        for (int i =0; i < prices.size()-1; i++){ // do not look at the last day's price, trying to find potential buy
+            if ( prices[i] < prices[i+1]){ // if tomorrow's price is increasing, we have potential ith product to buy
+                //cout << "potential buy " << prices[i] << endl;
+                buyingPrice=prices[i];
+                if (previousBuyingPrice > buyingPrice){ // if the previous product was more expensive than current one, we check profit
+                    sellingPrice=-10; // reset the selling price for the potential buy
+                    for (int j=i+1; j < prices.size(); j++){ // find the most expensive product in the remaining days
+                        if ( sellingPrice <prices[j]){
+                            sellingPrice=prices[j]; // for most profit we have to sell at the maximum price day
+                        }
+                    }
+                    //cout << "selling price for that potential buy " << sellingPrice << endl;
+                    currentProfit= sellingPrice - buyingPrice; // potential trade profit calculated
+                    //cout << "profit for that trade is: " << currentProfit << endl;
+                    if (currentProfit > max){ // if we have even more profit
+                        max= currentProfit;
+                        previousBuyingPrice= buyingPrice; // updating the current max's buying price for the next potential product to buy
+                    }
+                }
+            }
+        }
+        return max;
+    }
+};
