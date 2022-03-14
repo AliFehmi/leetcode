@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int negatives=0;
+        for (int i=0; i < nums.size();i++){
+            if (nums[i]<0 ){
+                negatives++;
+            }
+        }
+        if (negatives==nums.size()){
+            int max=nums[0];
+            for (int i=1; i <nums.size(); i++){
+                if (nums[i] > max){
+                    max= nums[i];
+                }
+            }
+                 return max;
+         }
+
+        
+        int tempSum=0, currentMaxSum=0;
+        for (int i=0; i <nums.size(); i++){
+            if (nums[i] < 0){ // when we encounter negative number
+                if (-nums[i] > currentMaxSum){ // if the negative number is larger than the sum of the numbers so far
+                    if (currentMaxSum > tempSum){
+                        tempSum= currentMaxSum; // so far values are stored here
+                        
+                    }
+                    currentMaxSum=0;
+                }
+                else{
+                    
+                    if (currentMaxSum > tempSum){ // tempSum is holding the value before the last negative number encounter. To check if after the encounter sum is increased or decreased.
+                        tempSum= currentMaxSum; // value until negative encounter is stored here
+                    }
+                    currentMaxSum+= nums[i];
+                    
+                }
+            }
+            else{
+                
+                currentMaxSum+= nums[i];
+           
+            }
+        }
+        if (tempSum > currentMaxSum){
+            return tempSum;
+        }
+        
+        return currentMaxSum;
+                           
+    }
+};
