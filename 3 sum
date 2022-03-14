@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int sum2;
+        vector<int> triplet(3);
+        vector<vector<int>> matrix;
+        for (int i=0; i < nums.size()-2; i++){
+            for (int j=i+1; j < nums.size()-1; j++){
+                sum2= nums[i]+nums[j];
+                for (int k= j+1; k < nums.size(); k++){ // searching for a possible sum3=0, where sum 3 is a sum of three numbers in which first and second numbers are fixed
+                   
+                    if (sum2== -nums[k]){
+                        bool duplicateCheck=false;
+                        triplet[0]= nums[i];
+                        triplet[1]= nums[j];
+                        triplet[2]= nums[k];
+                        sort(triplet.begin(), triplet.end());
+                        for (int m=0; m < matrix.size(); m++){ // check if triplet is already in matrix
+                            if (triplet[0]== matrix[m][0] && triplet[1]== matrix[m][1] && triplet[2]== matrix[m][2]){
+                                duplicateCheck=true;
+                            }
+                        }
+                        if (!duplicateCheck){
+                            matrix.push_back(triplet);
+                            break;
+                        }
+                        
+                    }
+                }
+            }
+        }
+        return matrix;
+    }
+};
