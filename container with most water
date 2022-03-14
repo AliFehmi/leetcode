@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int firstIndex, lastIndex, area, base=0, max=0, leftMaxStick, rightMaxStick;
+        rightMaxStick= height[height.size()-1];
+        
+        leftMaxStick=height[0];
+       
+       bool firstTry=true;
+        for (int i=0; i <height.size(); i++){
+            while (i!= height.size()-1 && leftMaxStick> height[i]) { // the area increases if we choose larger left side stick, since the size and base decreased we do not need to check i+1th stick
+                
+                i++;
+            }
+            leftMaxStick= height[i];
+           rightMaxStick= height[height.size()-1];
+           
+            base= height.size()-i;
+            for (int j=height.size()-1;j> i ; j--){
+                base--;
+                
+                while (j>i && rightMaxStick >height[j]){ // we want the right most stick if it is decreasing as we go left we can skip that stick
+                    j--;
+                    base--;
+                }
+                // cout << "left stick is: " << height[i] << " right stick is: " << height[j] << endl;
+                rightMaxStick=height[j];
+                if (height[i] > height[j]){
+                    area= height[j] * base;
+                }
+                else{
+                    area= height[i] * base;
+                }
+                if ( area> max){
+                    max= area;
+                    
+                }
+                if (rightMaxStick>= leftMaxStick){ // if right most possible stick is larger than left one we dont need to check rest 
+                    break;
+                }
+                
+                
+            }
+            
+        }
+        
+            
+        return max;
+        
+    }
+};
