@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int steps_taken=0;
+    
+   
+
+    int climbStairs(int n) {
+        
+        if(n==1){
+            return 1;
+        }
+        if(n==2){
+            return 2;
+        }
+        vector<int> list;
+        int steps;
+        list.push_back(1);
+        list.push_back(2);
+        for(int i=1;i < n-1; i++){
+            steps= list[i]+ list[i-1];
+            list.push_back(steps);
+        }
+        return steps;
+    }
+
+};
