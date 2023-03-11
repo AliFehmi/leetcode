@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        int i=0, temp, oneBits=0;
+        vector<int> arr;
+        while (i <= n){ 
+            temp=i;
+            while (temp > 0){
+                if ( temp & 1 ){ // this returns 1 or 0 depending on the last bit of temp since 1 = .. 0000 0001
+                    oneBits++;
+                }
+                temp >>=1; // get to the next bit 
+            }
+            i++;
+            
+            arr.push_back(oneBits);
+            oneBits=0;
+        }
+        return arr;
+    }
+};
