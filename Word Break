@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        vector<int> breakingPoints(s.length()+1, 0); // this vector will hold the indexes where word s can be broken into subwords
+        breakingPoints[0]=1; // initially it can be broken into itself
+        for(int i=1; i < s.length()+1; i++){ // discovering the break points
+            for(int w=0; w < wordDict.size(); w++){
+
+                if( i >= wordDict[w].length() && s.substr(i-wordDict[w].length(), wordDict[w].length()) == wordDict[w] && breakingPoints[i-wordDict[w].length()]){ // if the word matches and left part of the word s has break point
+                    breakingPoints[i]=1;
+                    
+                    break;
+                }
+            }
+        }
+        return breakingPoints[breakingPoints.size()-1];
+    }
+};
